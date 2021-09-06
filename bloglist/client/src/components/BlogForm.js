@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 const BlogForm = ({ handleCreate }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-  const addBlog = (event) => {
+  const addBlog = event => {
     event.preventDefault()
-    handleCreate({
-      title: title,
-      author: author,
-      url: url,
-    })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+
+    const blogObject = {
+      title: event.target.title.value,
+      author: event.target.author.value,
+      url: event.target.url.value
+    }
+
+    handleCreate(blogObject)
   }
 
   BlogForm.propTypes = {
@@ -28,21 +24,18 @@ const BlogForm = ({ handleCreate }) => {
       <form onSubmit={addBlog}>
         title:
         <input
-          value={title}
+          name="title"
           id="title"
-          onChange={({ target }) => setTitle(target.value)}
         />
         author:
         <input
-          value={author}
-          id='author'
-          onChange={({ target }) => setAuthor(target.value)}
+          name="author"
+          id="author"
         />
         url:
         <input
-          value={url}
+          name="url"
           id="url"
-          onChange={({ target }) => setUrl(target.value)}
         />
         <button type="submit" id="submitBlog">create</button>
       </form>

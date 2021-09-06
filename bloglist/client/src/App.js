@@ -2,43 +2,21 @@ import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
+import { setNotification } from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
-
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className="success">
-      {message}
-    </div>
-  )
-}
-
-const ErrorMessage = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-
-  return (
-    <div className="error">
-      {message}
-    </div>
-  )
-}
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
 
   const blogFormRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -57,7 +35,7 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
-      <ErrorMessage message={errorMessage} />
+      <Notification />
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -101,10 +79,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('wrong credentials', 'ERROR_NOTIFICATION', 5000))
     }
   }
 
@@ -118,15 +93,9 @@ const App = () => {
     try {
       const theBlog = await blogService.create(newBlog)
       setBlogs(blogs.concat(theBlog))
-      setSuccessMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
+      dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`, 'SUCCESS_NOTIFICATION', 5000))
     } catch (exception) {
-      setErrorMessage('Unable to add new blog')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('Unable to add new blog', 'ERROR_NOTIFICATION', 5000))
     }
   }
 
@@ -163,8 +132,7 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
-        <Notification message={successMessage} />
-        <ErrorMessage message={errorMessage} />
+        <Notification />
         <div>
           <p>{user.name} logged in</p>
           <button onClick={() => {logout()}}>logout</button>
