@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { toggleBlogExpansion } from '../reducers/blogReducer'
 
 const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const dispatch = useDispatch()
 
-  const hideWhenIsExpanded = { display: isExpanded ? 'none' : '' }
-  const showWhenIsExpanded = { display: isExpanded ? '' : 'none' }
+  const hideWhenIsExpanded = { display: blog.isExpanded ? 'none' : '' }
+  const showWhenIsExpanded = { display: blog.isExpanded ? '' : 'none' }
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,7 +17,7 @@ const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
   }
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded)
+    dispatch(toggleBlogExpansion(blog))
   }
 
   const handleLike = (event) => {
