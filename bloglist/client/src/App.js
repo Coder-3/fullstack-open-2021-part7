@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import { loginUser, logoutUser } from './reducers/userReducer'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, createBlog, likeBlog, deleteBlog } from './reducers/blogReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import './index.css'
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const user = useSelector(state => state.user)
 
   const blogFormRef = useRef()
   const dispatch = useDispatch()
@@ -28,14 +25,6 @@ const App = () => {
     return blogs.sort((a, b) => b.likes - a.likes)
   }
 
-  useEffect(() => {
-    const loggedInUser = window.localStorage.getItem('loggedInUser')
-    if (loggedInUser) {
-      const user = JSON.parse(loggedInUser)
-      setUser(user)
-    }
-  }, [])
-
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
@@ -45,20 +34,16 @@ const App = () => {
           username
           <input
             type="text"
-            value={username}
-            name="Username"
+            name="username"
             id="username"
-            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           password
           <input
             type="password"
-            value={password}
-            name="Password"
+            name="password"
             id="password"
-            onChange={({ target }) => setPassword(target.value)}
           />
         </div>
         <button type="submit" id="loginButton">login</button>
@@ -69,27 +54,20 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
 
+    const credentials = {
+      username: event.target.username.value,
+      password: event.target.password.value
+    }
+
     try {
-      const user = await loginService.login({
-        username, password,
-      })
-
-      window.localStorage.setItem(
-        'loggedInUser', JSON.stringify(user)
-      )
-
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
+      dispatch(loginUser(credentials))
     } catch (exception) {
       dispatch(setNotification('wrong credentials', 'ERROR_NOTIFICATION', 5000))
     }
   }
 
   const logout = () => {
-    window.localStorage.removeItem('loggedInUser')
-    setUser(null)
+    dispatch(logoutUser())
   }
 
   const handleAddBlog = async (newBlog) => {
