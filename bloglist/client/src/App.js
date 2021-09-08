@@ -4,7 +4,7 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, createBlog } from './reducers/blogReducer'
+import { initializeBlogs, createBlog, likeBlog, deleteBlog } from './reducers/blogReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -102,34 +102,12 @@ const App = () => {
     }
   }
 
-  const likeBlog = async (id, blogObject) => {
-    // const updatedBlog = await blogService.update(id, blogObject)
-    await blogService.update(id, blogObject)
-    // setBlogs(blogs.map(blog => {
-    //   if (blog.id !== id) {
-    //     return blog
-    //   } else {
-    //     const modifiedUpdatedBlog = {
-    //       title: updatedBlog.title,
-    //       author: updatedBlog.author,
-    //       url: updatedBlog.url,
-    //       likes: updatedBlog.likes,
-    //       user: {
-    //         name: blog.user.name
-    //       },
-    //       id: updatedBlog.id
-    //     }
-
-    //     return modifiedUpdatedBlog
-    //   }
-    // }).sort((a, b) => b.likes - a.likes))
+  const handleLike = async (id, blogObject) => {
+    dispatch(likeBlog(id, blogObject))
   }
 
-  const deleteBlog = async id => {
-    await blogService.deleteBlog(id)
-
-  //   const allBlogs = await blogService.getAll()
-  //   setBlogs(allBlogs.sort((a, b) => b.likes - a.likes))
+  const handleDelete = async id => {
+    dispatch(deleteBlog(id))
   }
 
   const showBlogs = () => {
@@ -145,7 +123,7 @@ const App = () => {
           <BlogForm handleCreate={handleAddBlog} />
         </Togglable>
         <div>
-          {sortedBlogs().map(blog => <Blog key={blog.id} blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} user={user} />)}
+          {sortedBlogs().map(blog => <Blog key={blog.id} blog={blog} likeBlog={handleLike} deleteBlog={handleDelete} user={user} />)}
         </div>
       </div>
     )
