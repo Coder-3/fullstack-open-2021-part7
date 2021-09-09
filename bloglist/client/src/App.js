@@ -3,71 +3,35 @@ import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
-import { loginUser, logoutUser } from './reducers/userReducer'
+import UsersTable from './components/Users'
+import Login from './components/Login'
+import User from './components/User'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, createBlog, likeBlog, deleteBlog } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import './index.css'
 
-const App = () => {
-  const user = useSelector(state => state.user)
+import {
+  Switch, Route
+} from 'react-router-dom'
 
-  const blogFormRef = useRef()
+const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
+  const blogFormRef = useRef()
+
+  const user = useSelector(state => state.user)
   const blogs = useSelector(state => state.blogs)
+  const users = useSelector(state => state.users)
 
   const sortedBlogs = () => {
     return blogs.sort((a, b) => b.likes - a.likes)
-  }
-
-  const loginForm = () => (
-    <div>
-      <h2>log in to application</h2>
-      <Notification />
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            name="username"
-            id="username"
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            name="password"
-            id="password"
-          />
-        </div>
-        <button type="submit" id="loginButton">login</button>
-      </form>
-    </div>
-  )
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    const credentials = {
-      username: event.target.username.value,
-      password: event.target.password.value
-    }
-
-    try {
-      dispatch(loginUser(credentials))
-    } catch (exception) {
-      dispatch(setNotification('wrong credentials', 'ERROR_NOTIFICATION', 5000))
-    }
-  }
-
-  const logout = () => {
-    dispatch(logoutUser())
   }
 
   const handleAddBlog = async (newBlog) => {
@@ -89,14 +53,12 @@ const App = () => {
   }
 
   const showBlogs = () => {
+    if (!user) {
+      return null
+    }
+
     return (
       <div>
-        <h2>blogs</h2>
-        <Notification />
-        <div>
-          <p>{user.name} logged in</p>
-          <button onClick={() => {logout()}}>logout</button>
-        </div>
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm handleCreate={handleAddBlog} />
         </Togglable>
@@ -109,15 +71,20 @@ const App = () => {
 
   return (
     <div>
-      {user === null ?
-        <div>
-          {loginForm()}
-        </div>
-        :
-        <div>
-          {showBlogs()}
-        </div>
-      }
+      <h2>blogs</h2>
+      <Notification />
+      <Login />
+      <User />
+      <Switch>
+        <Route path="/users">
+          <UsersTable users={users} />
+        </Route>
+        <Route path="/">
+          <div>
+            {showBlogs()}
+          </div>
+        </Route>
+      </Switch>
     </div>
   )
 }
