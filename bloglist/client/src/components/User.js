@@ -1,19 +1,26 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { logoutUser } from '../reducers/userReducer'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 const User = () => {
-  const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
+  const users = useSelector(state => state.users)
+  const id = useParams().id
 
-  if (!user) {
+  if (users.length === 0) {
     return null
   }
 
+  const user = users.find(u => u.id === id)
+
   return (
     <div>
-      <p>{user.name} logged in</p>
-      <button onClick={() => dispatch(logoutUser())}>logout</button>
+      <h2>{user.name}</h2>
+      <strong>added blogs</strong>
+      <ul>
+        {user.blogs.map(blog =>
+          <li key={blog.id}>{blog.title}</li>
+        )}
+      </ul>
     </div>
   )
 }

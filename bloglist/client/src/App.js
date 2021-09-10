@@ -5,6 +5,7 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import UsersTable from './components/Users'
 import Login from './components/Login'
+import LoggedInUser from './components/LoggedInUser'
 import User from './components/User'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs, createBlog, likeBlog, deleteBlog } from './reducers/blogReducer'
@@ -74,9 +75,12 @@ const App = () => {
       <h2>blogs</h2>
       <Notification />
       <Login />
-      <User />
+      <LoggedInUser />
       <Switch>
-        <Route path="/users">
+        <Route path="/users/:id">
+          <User />
+        </Route>
+        <Route path="/users/">
           <UsersTable users={users} />
         </Route>
         <Route path="/">

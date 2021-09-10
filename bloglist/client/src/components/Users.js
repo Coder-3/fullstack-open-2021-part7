@@ -1,13 +1,13 @@
 import React from 'react'
-// import { BrowserRouter as Router,
-//   Switch,
-//   Route,
-//   Link,
-// } from 'react-router-dom'
+import {
+  Link,
+} from 'react-router-dom'
 
-const User = ({ name, blogCount }) => (
+const User = ({ name, blogCount, id }) => (
   <tr>
-    <td>{name}</td>
+    <td>
+      <Link to={`/users/${id}`}>{name}</Link>
+    </td>
     <td>{blogCount}</td>
   </tr>
 )
@@ -23,7 +23,7 @@ const UsersTable = ({ users }) => (
       </thead>
       <tbody>
         {users.map(user =>
-          <User key={user.id} name={user.name} blogCount={user.blogs.length} />
+          <User key={user.id} name={user.name} blogCount={user.blogs.length} id={user.id} />
         )}
       </tbody>
     </table>
