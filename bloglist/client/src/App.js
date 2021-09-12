@@ -4,7 +4,7 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import UsersTable from './components/UsersTable'
 import Login from './components/Login'
-import LoggedInUser from './components/LoggedInUser'
+import Navigation from './components/Navigation'
 import User from './components/User'
 import Blogs from './components/Blogs'
 import SingleBlog from './components/SingleBlog'
@@ -43,10 +43,10 @@ const App = () => {
 
   return (
     <div>
+      <Navigation />
       <h2>blogs</h2>
       <Notification />
       <Login />
-      <LoggedInUser />
       <Switch>
         <Route path="/users/:id">
           <User />
