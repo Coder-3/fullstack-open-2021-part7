@@ -29,6 +29,8 @@ const SingleBlog = () => {
     dispatch(likeBlog(blog.id, updatedBlog))
   }
 
+  const generateKey = () => Math.floor(Math.random() * 10000)
+
   const handleDelete = event => {
     event.preventDefault()
 
@@ -44,6 +46,12 @@ const SingleBlog = () => {
       <button onClick={handleLike}>like</button>
       <button onClick={handleDelete}>remove</button>
       <p>added by {blog.author}</p>
+      <strong>comments</strong>
+      <ul>
+        {blog.comments.map(comment =>
+          <li key={generateKey()}>{comment}</li>
+        )}
+      </ul>
     </div>
   )
 }

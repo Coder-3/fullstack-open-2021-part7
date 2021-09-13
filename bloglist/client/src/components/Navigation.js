@@ -14,7 +14,7 @@ const Navigation = () => {
   return (
     <nav style={style}>
       <Link to="/">blogs</Link>
-      <Link to="users">users</Link>
+      <Link to="/users">users</Link>
       {user !== null ?
         <div>
           {user.name} logged in
