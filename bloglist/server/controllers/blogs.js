@@ -66,7 +66,7 @@ router.post('/', async (request, response) => {
 
 router.post('/:id/comments', async (request, response) => {
   const blog = request.body
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: false })
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
 
   response.json(updatedBlog.toJSON())
 })
