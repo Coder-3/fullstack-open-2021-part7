@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { Container } from './components/Body.styled'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
@@ -42,7 +43,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Container >
       <Navigation />
       <h2>blogs</h2>
       <Notification />
@@ -64,7 +65,7 @@ const App = () => {
           <Blogs />
         </Route>
       </Switch>
-    </div>
+    </Container>
   )
 }
 
