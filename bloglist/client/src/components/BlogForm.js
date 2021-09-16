@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { FormContainer, ResponsiveInput } from '../global.styled'
 
 const BlogForm = ({ handleCreate }) => {
   const addBlog = event => {
@@ -21,24 +22,24 @@ const BlogForm = ({ handleCreate }) => {
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={addBlog}>
-        title:
-        <input
+      <FormContainer onSubmit={addBlog}>
+        title
+        <ResponsiveInput
           name="title"
           id="title"
         />
-        author:
-        <input
+        author
+        <ResponsiveInput
           name="author"
           id="author"
         />
-        url:
-        <input
+        url
+        <ResponsiveInput
           name="url"
           id="url"
         />
         <button type="submit" id="submitBlog">create</button>
-      </form>
+      </FormContainer>
     </div>
   )
 }

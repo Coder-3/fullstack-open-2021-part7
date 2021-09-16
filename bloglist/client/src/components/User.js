@@ -1,4 +1,5 @@
 import React from 'react'
+import { Section } from '../global.styled'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -14,13 +15,17 @@ const User = () => {
 
   return (
     <div>
-      <h2>{user.name}</h2>
-      <strong>added blogs</strong>
-      <ul>
-        {user.blogs.map(blog =>
-          <li key={blog.id}>{blog.title}</li>
-        )}
-      </ul>
+      <Section>
+        <h2>{user.name}</h2>
+      </Section>
+      <Section>
+        <strong>added blogs</strong>
+        <ul>
+          {user.blogs.map(blog =>
+            <li key={blog.id}>{blog.title}</li>
+          )}
+        </ul>
+      </Section>
     </div>
   )
 }

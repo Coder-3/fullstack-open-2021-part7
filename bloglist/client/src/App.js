@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Container } from './components/Body.styled'
+import GlobalStyle, { Container, Section } from './global.styled'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
@@ -43,29 +43,36 @@ const App = () => {
   }
 
   return (
-    <Container >
+    <div>
+      <GlobalStyle />
       <Navigation />
-      <h2>blogs</h2>
-      <Notification />
-      <Login />
-      <Switch>
-        <Route path="/users/:id">
-          <User />
-        </Route>
-        <Route path="/users/">
-          <UsersTable users={users} />
-        </Route>
-        <Route path="/blogs/:id">
-          <SingleBlog />
-        </Route>
-        <Route path="/">
-          <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-            <BlogForm handleCreate={handleAddBlog} />
-          </Togglable>
-          <Blogs />
-        </Route>
-      </Switch>
-    </Container>
+      <Container >
+        <h1>blogs</h1>
+        <Notification />
+        <Section>
+          <Login />
+        </Section>
+        <Switch>
+          <Route path="/users/:id">
+            <User />
+          </Route>
+          <Route path="/users/">
+            <UsersTable users={users} />
+          </Route>
+          <Route path="/blogs/:id">
+            <SingleBlog />
+          </Route>
+          <Route path="/">
+            <Section>
+              <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+                <BlogForm handleCreate={handleAddBlog} />
+              </Togglable>
+            </Section>
+            <Blogs />
+          </Route>
+        </Switch>
+      </Container>
+    </div>
   )
 }
 

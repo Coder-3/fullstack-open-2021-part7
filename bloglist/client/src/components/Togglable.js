@@ -1,4 +1,16 @@
 import React, { useState, useImperativeHandle } from 'react'
+import styled from 'styled-components'
+
+const CreateBlogContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  @media only screen and (min-width: 600px) {
+    flex-direction: row;
+  }
+`
 
 const Togglable = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
@@ -17,7 +29,7 @@ const Togglable = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div>
+    <CreateBlogContainer>
       <div style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
@@ -25,7 +37,7 @@ const Togglable = React.forwardRef((props, ref) => {
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>
-    </div>
+    </CreateBlogContainer>
   )
 })
 
